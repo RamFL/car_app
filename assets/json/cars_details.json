@@ -1,0 +1,34 @@
+{
+  "cars": [
+    {
+      "carName": "Lamborghini",
+      "carImage": "assets/car/lamborghini_car.png",
+      "carRent": "300",
+      "isFavorite": true
+    },
+    {
+      "carName": "BMW",
+      "carImage": "assets/car/bmw_car.png",
+      "carRent": "220",
+      "isFavorite": false
+    },
+    {
+      "carName": "Tesla",
+      "carImage": "assets/car/tesla_car.png",
+      "carRent": "220",
+      "isFavorite": false
+    },
+    {
+      "carName": "Ferrari",
+      "carImage": "assets/car/ferrari_car.png",
+      "carRent": "220",
+      "isFavorite": false
+    },
+    {
+      "carName": "Bugatti",
+      "carImage": "assets/car/bugatti_car.png",
+      "carRent": "220",
+      "isFavorite": false
+    }
+  ]
+}

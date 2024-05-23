@@ -104,69 +104,74 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      pickUpLocation2(),
-                      SizedBox(height: 10),
-                      dropLocation(),
-                      SizedBox(height: 8),
-                      Obx(
-                        () => lController.distance.isNotEmpty
-                            ? Text(
-                                "Distance: ${lController.distance.value.toString()} km",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              )
-                            : const SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: Get.width,
-                height: Get.height * 0.3,
-                child: Image.asset(widget.data.carImage),
-              ),
-              // pickUpLocation(),
-              SizedBox(height: Get.height * 0.25),
-              Row(
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  RichText(
-                      text: TextSpan(
+                  SizedBox(
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          pickUpLocation2(),
+                          SizedBox(height: 10),
+                          dropLocation(),
+                          SizedBox(height: 8),
+                          Obx(
+                                () => lController.distance.isNotEmpty
+                                ? Text(
+                              "Distance: ${lController.distance.value.toString()} km",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                                : const SizedBox.shrink(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: Get.width,
+                    height: Get.height * 0.3,
+                    child: Image.asset(widget.data.carImage),
+                  ),
+                  // pickUpLocation(),
+                  // SizedBox(height: Get.height * 0.25),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextSpan(
-                          text: "\$${widget.data.carRent}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                      RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                  text: "\$${widget.data.carRent}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              TextSpan(
+                                  text: "/day",
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                            ],
                           )),
-                      TextSpan(
-                          text: "/day",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          )),
+                      rentNowButton(),
                     ],
-                  )),
-                  rentNowButton(),
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -359,15 +364,21 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       itemBuilder: (context, item) {
         return Align(
           alignment: Alignment.topCenter,
-          child: ListTile(
-            onTap: () {
-              pickController.text = item.address;
-              pickAddress = pickController.text;
-              pickLat = item.latitude;
-              pickLang = item.longitude;
-              print("$pickAddress, $pickLat, $pickLang");
-            },
-            title: Text(item.address),
+          child: Column(
+            children: [
+              ListTile(
+                onTap: () {
+                  pickController.text = item.address;
+                  pickAddress = pickController.text;
+                  pickLat = item.latitude;
+                  pickLang = item.longitude;
+                  print("$pickAddress, $pickLat, $pickLang");
+                },
+                title: Text(item.address),
+
+              ),
+              Divider(),
+            ],
           ),
         );
       },
@@ -435,38 +446,43 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       itemBuilder: (context, item) {
         return Align(
           alignment: Alignment.topCenter,
-          child: ListTile(
-            onTap: () {
-              dropController.text = item.address;
-              dropAddress = dropController.text;
-              dropLat = item.latitude;
-              dropLang = item.longitude;
-              print("$dropAddress, $dropLat, $dropLang");
+          child: Column(
+            children: [
+              ListTile(
+                onTap: () {
+                  dropController.text = item.address;
+                  dropAddress = dropController.text;
+                  dropLat = item.latitude;
+                  dropLang = item.longitude;
+                  print("$dropAddress, $dropLat, $dropLang");
 
-              if (formKey.currentState!.validate()) {
-                // showDialog(
-                //   context: context,
-                //   barrierDismissible: false,
-                //   builder: (context) {
-                //     return Container(
-                //       color: Colors.transparent,
-                //       child: const Center(
-                //         child: CircularProgressIndicator(
-                //           color: Colors.white,
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // );
-                lController.getDistance(
-                  pickLat.toString(),
-                  pickLang.toString(),
-                  dropLat.toString(),
-                  dropLang.toString(),
-                );
-              }
-            },
-            title: Text(item.address),
+                  if (formKey.currentState!.validate()) {
+                    // showDialog(
+                    //   context: context,
+                    //   barrierDismissible: false,
+                    //   builder: (context) {
+                    //     return Container(
+                    //       color: Colors.transparent,
+                    //       child: const Center(
+                    //         child: CircularProgressIndicator(
+                    //           color: Colors.white,
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    // );
+                    lController.getDistance(
+                      pickLat.toString(),
+                      pickLang.toString(),
+                      dropLat.toString(),
+                      dropLang.toString(),
+                    );
+                  }
+                },
+                title: Text(item.address),
+              ),
+              Divider(),
+            ],
           ),
         );
       },

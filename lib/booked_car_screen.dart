@@ -15,9 +15,7 @@ class BookedCarsScreen extends StatefulWidget {
 }
 
 class _BookedCarsScreenState extends State<BookedCarsScreen> {
-
   List<BookedCarModel> bookedCars = [];
-
 
   late SharedPreferences sp;
 
@@ -50,62 +48,105 @@ class _BookedCarsScreenState extends State<BookedCarsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Booking Details", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),),
+        title: Text(
+          "Booking Details",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SizedBox(
         height: Get.height,
         width: Get.width,
-        child: ListView.builder(
+        child: bookedCars.isEmpty
+            ? const Center(
+                child: Text(
+                  "No Booking Yet",
+                  style: TextStyle(fontSize: 16),
+                ),
+              )
+            : ListView.builder(
+                itemCount: bookedCars.length,
+                itemBuilder: (context, index) {
+                  var data = bookedCars.reversed.toList()[index];
 
-          itemCount: bookedCars.length,
-          itemBuilder: (context, index) {
-
-            var data = bookedCars.reversed.toList()[index];
-
-
-            return Container(
-              width: Get.width,
-              height: Get.height * 0.38,
-              margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-              decoration: BoxDecoration(
-                // color: Colors.red,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black54.withOpacity(0.2),
-                    spreadRadius: 3,
-                    blurRadius: 2
-                  ),
-                ]
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(data.carName.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,),),
-                      Text(DateFormat('hh:mm a, dd/MM/yyyy').format(data.bookDate).toString(), style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold,),),
-                    ],
-                  ),
-                  Center(
-                    child: SizedBox(
-                      height: Get.height * 0.15,
-                      width: Get.width * 0.5,
-                      child: Image.asset(data.carImage.toString(), fit: BoxFit.fill,),
+                  return Container(
+                    width: Get.width,
+                    height: Get.height * 0.38,
+                    margin: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                    decoration: BoxDecoration(
+                        // color: Colors.red,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black54.withOpacity(0.2),
+                              spreadRadius: 3,
+                              blurRadius: 2),
+                        ]),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              data.carName.toString(),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              DateFormat('hh:mm a, dd/MM/yyyy')
+                                  .format(data.bookDate)
+                                  .toString(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Center(
+                          child: SizedBox(
+                            height: Get.height * 0.15,
+                            width: Get.width * 0.5,
+                            child: Image.asset(
+                              data.carImage.toString(),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "Distance(KM): ${data.distance.toString()}.",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          "Pick Address: ${data.pickAddress.toString()}.",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          "Drop Address: ${data.dropAddress.toString()}.",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  Text("Distance(KM): ${data.distance.toString()}.", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,),),
-                  SizedBox(height: 5),
-                  Text("Pick Address: ${data.pickAddress.toString()}.", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,),),
-                  SizedBox(height: 5),
-                  Text("Drop Address: ${data.dropAddress.toString()}.", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,),),
-
-                ],
+                  );
+                },
               ),
-            );
-          },),
       ),
     );
   }
